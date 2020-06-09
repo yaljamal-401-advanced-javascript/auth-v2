@@ -1,6 +1,6 @@
 require('dotenv').config();
 const superaent=require('superagent');
-const users=require('../auth/users.js');
+const users=require('../models/users-model.js');
 
 const tokenServerUri='https://github.com/login/oauth/access_token';
 const remoteAPI = 'https://api.github.com/user';

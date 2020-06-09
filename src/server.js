@@ -3,7 +3,7 @@ const express=require('express');
 const router=require('../src/auth/router.js');
 const morgan=require('morgan');
 const app=express();
-
+app.use(express.static('./public'));
 const notFound=require('../src/middleware/404.js');
 const errorHandler=require('../src/middleware/500.js');
 

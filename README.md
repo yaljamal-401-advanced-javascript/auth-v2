@@ -3,7 +3,7 @@
 ### Author: Yazan Aljamal
 
 ### Links and Resources
-- [submission PR](https://github.com/yaljamal-401-advanced-javascript/authentication/pull/1)
+- [submission PR](https://github.com/yaljamal-401-advanced-javascript/auth-v2/pull/1)
 - [ci/cd]() (GitHub Actions)
 - [swagger](https://inspector.swagger.io/builder)
 

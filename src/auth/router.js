@@ -2,12 +2,15 @@ const express=require('express');
 const users=require('./models/users-model.js');
 const basicAuth=require('./middleware/basic.js');
 const oauth=require('./middleware/oauth.js');
+const bearer=require('./middleware/bearer.js');
 const router=express.Router();
 
 router.post('/signup',saveHandler);
 router.post('/signin',basicAuth,signHandler);
 router.get('/users',listHandler);
-
+router.get('/secret',bearer,(req,res)=>{
+  res.json(req.user);
+});
 router.get('/oauth',oauth,(req,res)=>{
   res.json({token:req.token});
 });

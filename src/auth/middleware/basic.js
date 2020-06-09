@@ -1,5 +1,5 @@
 const base64=require('base-64');
-const users=require('../auth/users.js');
+const users=require('../models/users-model.js');
 module.exports=(req,res,next) =>{
   if(!req.headers.authorization){
     next('invalid Login');
@@ -8,9 +8,11 @@ module.exports=(req,res,next) =>{
     console.log('basic',basic);
     const [user,pass]=base64.decode(basic).split(':');
 
-    users.authenticationBasic(user,pass)
+    users
+      .authenticationBasic(user,pass)
       .then((validUser)=>{
         req.token=users.generateToken(validUser);
+        req.user=validUser[0];
         next();
       }).catch((err)=>next(err));
   }

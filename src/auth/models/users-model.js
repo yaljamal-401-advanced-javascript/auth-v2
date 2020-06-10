@@ -4,7 +4,11 @@ const Model=require('./mongo.js');
 const bcryptjs=require('bcryptjs');
 const jwt=require('jsonwebtoken');
 const SECRET=process.env.CLIENT_SECRET || 'mysecret';
-
+const roles={
+  user:['read'],
+  editor:['read','create','update'],
+  admin:['read','create','update','delete'],
+};
 class Users extends Model{
   constructor(){
     super(schema);
@@ -23,7 +27,8 @@ class Users extends Model{
     return valid ? result:Promise.reject('Wrong Password');
   }
   generateToken(user){
-    const token=jwt.sign({username:user.username},SECRET);
+    const userData={username:user.username,role:user.role};
+    const token=jwt.sign(userData,SECRET);
     return token;
   }
   async authenticateToken(token){

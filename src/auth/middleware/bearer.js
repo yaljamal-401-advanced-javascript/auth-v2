@@ -6,11 +6,14 @@ module.exports=(req,res,next)=>{
     const [auth,token]=req.headers.authorization.split(' ');
     if(auth==='Bearer'){
       users.authenticateToken(token).then((validUser)=>{
-        req.user=validUser;
+        req.user={
+          username:validUser.username,
+          capabilities:validUser.capabilities,
+        };
         next();
       }).catch((e)=>next('Invalid login',e.message));
     }else{
-      next('Invalid aouth header');
+      next('Invalid auth header');
     }
   }
 }

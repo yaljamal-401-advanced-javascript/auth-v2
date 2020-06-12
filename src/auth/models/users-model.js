@@ -15,9 +15,10 @@ class Users extends Model{
   }
   async save(record){
     const result=await this.get({username:record.username});
+    console.log('result',result);
     if(result.length===0){
-      record.password=await bcryptjs.hash(record.password,5);
       const user=await this.create(record);
+      console.log('user',user);
       return user;
     }
   }
@@ -27,8 +28,12 @@ class Users extends Model{
     return valid ? result:Promise.reject('Wrong Password');
   }
   generateToken(user){
-    const userData={username:user.username,role:user.role};
-    const token=jwt.sign(userData,SECRET);
+    const token=jwt.sign({
+      exp:Math.floor(Date.now()/1000)+(15*60),
+      algorithm:'RS354',
+      username:user.username,
+      capabilities:roles[user.role],
+    },SECRET);
     return token;
   }
   async authenticateToken(token){
@@ -41,8 +46,16 @@ class Users extends Model{
       }else{
         return Promise.reject('User is not found');
       }
-    }catch(e){return Promise.reject(e.message);}
+    }catch(e){
+      return Promise.reject(e.message);
+    }
   }
-
+  can(permission){
+    if(permission){
+      return Promise.resolve(true);
+    }else{
+      return Promise.reject(false);
+    }
+  }
 }
 module.exports=new Users();
